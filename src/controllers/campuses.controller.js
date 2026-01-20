@@ -59,7 +59,7 @@ export const getAllCampuses = (req, res) => {
   if (!allCampuses) {
     return res.status(404).json({ message: "No campuses found" });
   }
-  return res.status(404).json({ message: "Found", allCampuses });
+  return res.status(200).json({ message: "Found", allCampuses });
 };
 
 export const getCampusById = (req, res) => {
@@ -73,10 +73,34 @@ export const getCampusById = (req, res) => {
     return res.status(404).json({ message: "No campus found" });
   }
 
-  return res.status(404).json({ error: "Campus not found", campus });
+  return res.status(200).json({ message: "Found", campus });
 };
 
 export const searchByFilter = (req, res) => {
   const { city, open, program } = req.query;
-  
+  let filteredCampuses = campuses;
+
+  if (!city && !open && !program) {
+    return res.status(200).json({ campuses });
+  }
+
+  if (city) {
+    filteredCampuses = filteredCampuses.filter((campus) => {
+      return campus.city === city;
+    });
+  }
+
+  if (program) {
+    filteredCampuses = filteredCampuses.filter((campus) => {
+      return campus.programs.includes(program);
+    });
+  }
+
+  if (open) {
+    filteredCampuses = filteredCampuses.filter((campus) => {
+      return campus.open === Boolean(open);
+    });
+  }
+
+  return res.status(200).json({ filteredCampuses });
 };

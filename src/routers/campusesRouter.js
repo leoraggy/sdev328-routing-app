@@ -11,8 +11,8 @@ router.get(["/about", "/info"], about);
 
 router.get("/", getAllCampuses);
 
-router.get("/:id", getCampusById);
-
 router.get("/search", searchByFilter);
+
+router.get("/:id", getCampusById);
 
 export default router;
